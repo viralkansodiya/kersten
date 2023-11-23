@@ -52,9 +52,9 @@ def create_lead_for_item_inquiry(lead, subject, message):
 			)
 
 	contact_data = frappe.db.sql(f""" Select co.name , dl.link_name From `tabContact` as co
-						  					Left join `tabContact Email` as ce ON ce.parent = co.name
-						  					left join `tabDynamic Link` as dl ON dl.parent = co.name
-						  					Where ce.email_id = '{sender}' and dl.link_doctype = "Customer" 
+											  Left join `tabContact Email` as ce ON ce.parent = co.name
+											  left join `tabDynamic Link` as dl ON dl.parent = co.name
+											  Where ce.email_id = '{sender}' and dl.link_doctype = "Customer" 
 											""",as_dict = 1)
 
 	if contact_data:
@@ -68,8 +68,8 @@ def create_lead_for_item_inquiry(lead, subject, message):
 		add_comment("Opportunity" , doc.name , content=message , comment_email = sender, comment_by = None)
 
 	contact_but_no_customer = frappe.db.sql(f""" Select co.name  From `tabContact` as co
-						  					Left join `tabContact Email` as ce ON ce.parent = co.name
-						  					Where ce.email_id = '{sender}'
+											  Left join `tabContact Email` as ce ON ce.parent = co.name
+											  Where ce.email_id = '{sender}'
 											""",as_dict = 1)
 	if not contact_but_no_customer:
 		customer = frappe.new_doc("Customer")
@@ -106,5 +106,4 @@ def create_lead_for_item_inquiry(lead, subject, message):
 			"is_primary_phone":1
 		})
 		contact.save(ignore_permissions=True)
-
-    frappe.msgprint("Thank you for reaching out to us. We will get back to you at the earliest.")
+	frappe.msgprint("Thank you for reaching out to us. We will get back to you at the earliest.")
